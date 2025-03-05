@@ -44,3 +44,8 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+
+
+//    Ad(details: "Toyota Agya 2021, irit BBM, city car nyaman, DP 10jt bisa bawa pulang! Cek unit di Jaksel. Call: 0819-5678-2345"),
+//Ad(details: "Dijual cepat! Toyota Avanza 2018, tangan pertama, pajak panjang, siap pakai. Harga nego. Hub: 0812-3456-7890"),
+//Ad(details: "Toyota Yaris 2020, KM rendah, kondisi mulus, surat lengkap. Harga 200jt nego. Minat? WA: 0856-7890-1234"),
