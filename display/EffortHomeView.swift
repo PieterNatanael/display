@@ -15,99 +15,97 @@ struct EffortHomeView: View {
     @State private var brand: String = ""
     @State private var adText: String = ""
     @State private var tokenBalance: Int = 3
-    
-    let maxCharacters = 133
-    
+
+    let maxCharacters = 180
+
     var body: some View {
         NavigationView {
             ZStack {
                 Color.gray
                     .ignoresSafeArea()
-                VStack(spacing: 16) {
-                    Image("EffortLogo")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 100)
-                        .padding(.top, 70)
-//                    Text("Effort")
-//                        .font(.largeTitle)
-//                        .bold()
-//                        .padding(.top)
-                    
-                    // Location Selection
-                    VStack(alignment: .leading) {
-                        Text("Select Location")
-                            .font(.headline)
-                        HStack {
-                            TextField("Country", text: $selectedCountry)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                            TextField("Province", text: $selectedProvince)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                            Button("Auto") {
-                                // Auto-detect location logic
-                            }
-                            .buttonStyle(.bordered)
-                        }
-                    }
-                    
-                    // Category & Brand Selection
-                    VStack(alignment: .leading) {
-                        Text("Item Details")
-                            .font(.headline)
-                        TextField("Category (e.g., Car, Phone)", text: $category)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                        TextField("Brand (e.g., Toyota, iPhone)", text: $brand)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                    }
-                    
-                    // Ad Input
-                    VStack(alignment: .leading) {
-                        Text("Ad Description (Max 160 characters)")
-                            .font(.headline)
-                        TextField("Describe your item and include contact info", text: $adText)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .onChange(of: adText) { newValue in
-                                if newValue.count > maxCharacters {
-                                    adText = String(newValue.prefix(maxCharacters))
+                ScrollView { // Added ScrollView to allow scrolling
+                    VStack(spacing: 16) {
+                        Image("EffortLogo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 100)
+                            .padding(.top, 40) // Adjusted padding
+
+                        // Location Selection
+                        VStack(alignment: .leading) {
+                            Text("Select Location")
+                                .font(.headline)
+                            HStack {
+                                TextField("Country", text: $selectedCountry)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                TextField("Province", text: $selectedProvince)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                Button("Auto") {
+                                    // Auto-detect location logic
                                 }
+                                .buttonStyle(.bordered)
                             }
-                        Text("\(adText.count)/\(maxCharacters)")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        }
+
+                        // Category & Brand Selection
+                        VStack(alignment: .leading) {
+                            Text("Item Details")
+                                .font(.headline)
+                            TextField("Category (e.g., Car, Phone)", text: $category)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                            TextField("Brand (e.g., Toyota, iPhone)", text: $brand)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                        }
+
+                        // Ad Input
+                        VStack(alignment: .leading) {
+                            Text("Ad Description (Max 180 characters)")
+                                .font(.headline)
+                            TextField("Describe your item and include contact info", text: $adText)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .onChange(of: adText) { newValue in
+                                    if newValue.count > maxCharacters {
+                                        adText = String(newValue.prefix(maxCharacters))
+                                    }
+                                }
+                            Text("\(adText.count)/\(maxCharacters)")
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                        }
+
+                        // Post Button
+                        Button(action: {
+                            // Handle posting logic
+                        }) {
+                            Text(tokenBalance > 0 ? "Post " : "Get More Tokens")
+                                .frame(maxWidth: .infinity)
+                                .font(.title2.bold())
+                                .padding()
+                                .background(tokenBalance > 0 ? Color.blue : Color.red)
+                                .foregroundColor(.white)
+                                .cornerRadius(8)
+                        }
+                        .disabled(adText.isEmpty)
+
+                        // View Ads Button
+                        NavigationLink(destination: ContentView()) {
+                            Text("View Ads")
+                                .frame(maxWidth: .infinity)
+                                .font(.title2.bold())
+                                .padding()
+                                .background(Color.green)
+                                .foregroundColor(.white)
+                                .cornerRadius(8)
+                        }
+
+                        // Token Balance
+//                        Text("Tokens: \(tokenBalance)")
+//                            .font(.caption)
+//                            .padding(.bottom, 10) // Reduced bottom padding
                     }
-                    
-                    // Post Button
-                    Button(action: {
-                        // Handle posting logic
-                    }) {
-                        Text(tokenBalance > 0 ? "Post (1 Token)" : "Get More Tokens")
-                            .frame(maxWidth: .infinity)
-                            .font(.title2.bold())
-                            .padding()
-                            .background(tokenBalance > 0 ? Color.blue : Color.red)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
-                    }
-                    .disabled(adText.isEmpty)
-                    
-                    // View Ads Button
-                    NavigationLink(destination: AdsListView()) {
-                        Text("View Ads")
-                            .frame(maxWidth: .infinity)
-                            .font(.title2.bold())
-                            .padding()
-                            .background(Color.green)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
-                    }
-                    
-                    // Token Balance
-                    Text("Tokens: \(tokenBalance)")
-                        .font(.caption)
-                        .padding(.bottom)
+                    .padding()
                 }
-                .padding()
             }
         }
     }
